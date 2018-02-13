@@ -1,0 +1,13 @@
+{
+  "name": "steffenf14/clippy-art",
+  "license": "WTFPL",
+  "description": "A short description of what your package does",
+  "autoload": {
+    "psr-0" : {
+      "Steffenf14\\Art" : "src"
+    }
+  },
+  "require": {
+    "php": "^7.2"
+  }
+}

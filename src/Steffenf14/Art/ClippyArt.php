@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace CakeMasterOfPie\OldSchool;
+namespace Steffenf14\Art;
 
 /**
- *       __________________________________________________________
- *      /                                                          \
- *     (  It looks like you were trying to have an awesome message  )
- *      \_  _______________________________________________________/
+ *       ___________________________________________________________
+ *      /                                                           \
+ *     (  It looks like you were trying to have an awesome message.  )
+ *     (  btw. i do not handle line breaks.                          )
+ *      \_  ________________________________________________________/
  *        )/
  *   ___
  *  /   \
@@ -19,20 +20,15 @@ namespace CakeMasterOfPie\OldSchool;
  *  |\__/|
  *  \____/
  *
- *
- * Class ClippyArt
- * @package CakeMasterOfPie\OldSchool
+ * Class Clippy
+ * @package Steffenf14\Art
  */
-class ClippyArt
+class Clippy
 {
     /**
      *
      */
     private const MIN_TEXT_LENGTH = 3;
-    /**
-     *
-     */
-    private const MAX_TEXT_LENGTH = 150;
     /**
      * @var int
      */
@@ -76,15 +72,13 @@ class ClippyArt
 
     /**
      * @param int $maxTextLength
+     *
+     * @return void
      */
     public function setMaxTextLength(int $maxTextLength): void
     {
         if ($maxTextLength < self::MIN_TEXT_LENGTH) {
-            $this->maxTextLength = self::MIN_TEXT_LENGTH;
-        } else {
-            if ($maxTextLength > self::MAX_TEXT_LENGTH) {
-                $this->maxTextLength = self::MAX_TEXT_LENGTH;
-            }
+            $maxTextLength = self::MIN_TEXT_LENGTH;
         }
         $this->maxTextLength = $maxTextLength;
     }
@@ -94,7 +88,7 @@ class ClippyArt
      *
      * @return string
      */
-    public function getClippyArt(string $text): string
+    public function getArt(string $text): string
     {
         return $this->getBubble($text) . "\n" . $this->elementParts['clippy'];
     }
@@ -169,14 +163,10 @@ class ClippyArt
     private function getTopBubbleLine(int $length): string
     {
         $topLine = $this->elementParts['bubble']['top']['left']['top'];
-        for ($i = 1; $i <= $length - 3; $i++) {
-            $topLine .= '_';
-        }
+        $topLine .= str_pad('', $length - 3, '_', STR_PAD_RIGHT);
         $topLine .= $this->elementParts['bubble']['top']['right']['top'] . "\n";
         $topLine .= $this->elementParts['bubble']['top']['left']['lower'];
-        for ($i = 1; $i <= $length - 3; $i++) {
-            $topLine .= ' ';
-        }
+        $topLine .= str_pad('', $length - 3, ' ', STR_PAD_RIGHT);
         $topLine .= $this->elementParts['bubble']['top']['right']['lower'];
 
         return $topLine . "\n";
@@ -191,13 +181,9 @@ class ClippyArt
     {
         $lowerLine = $this->elementParts['bubble']['lower']['left'];
 
-        for ($i = 1; $i <= $length - 3; $i++) {
-            $lowerLine .= '_';
-        }
+        $lowerLine .= str_pad('', $length - 3, '_', STR_PAD_RIGHT);
         $lowerLine .= $this->elementParts['bubble']['lower']['right'];
-
         $lowerLine .= "\n" . $this->elementParts['bubble']['lower']['start'];
-
         return $lowerLine;
     }
 
@@ -209,34 +195,24 @@ class ClippyArt
     private function splitTextRespectingWords(string $text): array
     {
         $arrayWords = explode(' ', $text);
-
         $currentLength = 0;
         $index = 0;
         $linesOfText = [];
-
         foreach ($arrayWords as $word) {
             $wordLength = \strlen($word) + 1;
-
             if (($currentLength + $wordLength) <= $this->maxTextLength) {
                 if (!isset($linesOfText[$index])) {
                     $linesOfText[$index] = '';
                 }
                 $linesOfText[$index] .= $word . ' ';
-
                 $currentLength += $wordLength;
             } else {
                 $index++;
-
                 $currentLength = $wordLength;
-
                 $linesOfText[$index] = $word . ' ';
             }
         }
-
-        $linesOfText = array_map(function ($line) {
-            return trim($line);
-        }, $linesOfText);
-
+        $linesOfText = array_map('trim', $linesOfText);
         return $linesOfText;
     }
 }

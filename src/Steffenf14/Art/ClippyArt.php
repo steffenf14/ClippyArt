@@ -6,8 +6,8 @@ namespace Steffenf14\Art;
 /**
  *       ___________________________________________________________
  *      /                                                           \
- *     (  It looks like you were trying to have an awesome message.  )
- *     (  btw. i do not handle line breaks.                          )
+ *     |  It looks like you were trying to have an awesome message.  |
+ *     |  btw. i do handle line breaks.                              |
  *      \_  ________________________________________________________/
  *        )/
  *   ___
@@ -63,8 +63,8 @@ class Clippy
                 'start' => '       )/'
             ],
             'line'  => [
-                'start' => '    (  ',
-                'end'   => '  )'
+                'start' => '    |  ',
+                'end'   => '  |'
             ]
 
         ]
@@ -139,7 +139,7 @@ class Clippy
     {
         $blubble = PHP_EOL;
         $length = $this->maxTextLength;
-        $linesOfText = $this->splitTextRespectingWords($text);
+        $linesOfText = $this->splitTextRespectingWordsAndLineFeed($text);
 
         if (\count($linesOfText) <= 1) {
             $length = \strlen(reset($linesOfText));
@@ -184,7 +184,18 @@ class Clippy
         $lowerLine .= str_pad('', $length - 3, '_');
         $lowerLine .= $this->elementParts['bubble']['lower']['right'];
         $lowerLine .= PHP_EOL . $this->elementParts['bubble']['lower']['start'];
+
         return $lowerLine;
+    }
+
+    private function splitTextRespectingWordsAndLineFeed(string $text): array
+    {
+        $linesOfText = [];
+        foreach (explode(PHP_EOL, $text) as $line) {
+            $linesOfText = array_merge($linesOfText, $this->splitTextRespectingWords($line));
+        }
+
+        return $linesOfText;
     }
 
     /**
@@ -213,6 +224,7 @@ class Clippy
             }
         }
         $linesOfText = array_map('trim', $linesOfText);
+
         return $linesOfText;
     }
 }

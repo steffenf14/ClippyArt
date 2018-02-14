@@ -90,7 +90,7 @@ class Clippy
      */
     public function getArt(string $text): string
     {
-        return $this->getBubble($text) . "\n" . $this->elementParts['clippy'];
+        return $this->getBubble($text) . PHP_EOL . $this->elementParts['clippy'];
     }
 
     /**
@@ -127,7 +127,7 @@ class Clippy
 
         $bubbleLine .= $this->elementParts['bubble']['line']['end'];
 
-        return $bubbleLine . "\n";
+        return $bubbleLine . PHP_EOL;
     }
 
     /**
@@ -137,11 +137,11 @@ class Clippy
      */
     private function getBubble(string $text): string
     {
-        $blubble = "\n";
+        $blubble = PHP_EOL;
         $length = $this->maxTextLength;
         $linesOfText = $this->splitTextRespectingWords($text);
 
-        if (count($linesOfText) <= 1) {
+        if (\count($linesOfText) <= 1) {
             $length = \strlen(reset($linesOfText));
             if ($length < self::MIN_TEXT_LENGTH) {
                 $length = self::MIN_TEXT_LENGTH;
@@ -163,13 +163,13 @@ class Clippy
     private function getTopBubbleLine(int $length): string
     {
         $topLine = $this->elementParts['bubble']['top']['left']['top'];
-        $topLine .= str_pad('', $length - 3, '_', STR_PAD_RIGHT);
-        $topLine .= $this->elementParts['bubble']['top']['right']['top'] . "\n";
+        $topLine .= str_pad('', $length - 3, '_');
+        $topLine .= $this->elementParts['bubble']['top']['right']['top'] . PHP_EOL;
         $topLine .= $this->elementParts['bubble']['top']['left']['lower'];
-        $topLine .= str_pad('', $length - 3, ' ', STR_PAD_RIGHT);
+        $topLine .= str_pad('', $length - 3, ' ');
         $topLine .= $this->elementParts['bubble']['top']['right']['lower'];
 
-        return $topLine . "\n";
+        return $topLine . PHP_EOL;
     }
 
     /**
@@ -181,9 +181,9 @@ class Clippy
     {
         $lowerLine = $this->elementParts['bubble']['lower']['left'];
 
-        $lowerLine .= str_pad('', $length - 3, '_', STR_PAD_RIGHT);
+        $lowerLine .= str_pad('', $length - 3, '_');
         $lowerLine .= $this->elementParts['bubble']['lower']['right'];
-        $lowerLine .= "\n" . $this->elementParts['bubble']['lower']['start'];
+        $lowerLine .= PHP_EOL . $this->elementParts['bubble']['lower']['start'];
         return $lowerLine;
     }
 
